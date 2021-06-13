@@ -1,19 +1,11 @@
 import React from 'react';
-import Data from "./Data";
+import Data from "./Row";
 import styled from "styled-components";
 import {Search} from '@styled-icons/material'
+import Table from "./Table";
+
 
 function GridComponent({data, fields}) {
-
-
-    //const rows = data.map(row => <Data value={row}/>)
-
-    const headerNames = [];
-
-    for (const key in fields) {
-        headerNames.push(fields[key]);
-    }
-    const headers = headerNames.map(key => <th>{key}</th>)
 
 
     return (
@@ -22,16 +14,7 @@ function GridComponent({data, fields}) {
                 <input placeholder="search.."/>
                 <Search fontSize="20" color="white" size="50px"/>
             </InputDiv>
-
-            {/*<Headers>*/}
-            <table>
-                <thead>
-                <tr>
-                    {headers}
-                </tr>
-                </thead>
-            </table>
-            {/*</Headers>*/}
+            <Table data={data} fields={fields}/>
         </DatContainer>
     );
 }
@@ -42,15 +25,38 @@ const DatContainer = styled.div`
   height: 80vh;
   width: 80vw;
   background-color: whitesmoke;
+  overflow: auto;
 
 
-  th{
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  thead th {
+    background-color: lightgray;
+    box-shadow: 5px 5px 5px rgba(0, 20, 150, 0.3);
+    border-radius: 2px;
+    padding: 0.5rem;
+    font-size: 20px;
+    border: dimgray;
+  }
+
+  th {
+    box-shadow: 3px 3px 3px rgba(0, 0, 50, 0.3);
     border-radius: 2px;
     padding: 0.2rem;
     font-size: 20px;
-    border:dimgray;
+    border: dimgray;
   }
+
+  .checkbox {
+    outline: 1px solid dimgray;
+    margin: 0.5rem;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .inputDiv{
+    display: flex;
+    justify-content: center;
+  }
+
 `;
 
 const InputDiv = styled.div`

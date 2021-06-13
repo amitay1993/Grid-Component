@@ -6,11 +6,15 @@
 
 body{
   height: 100vh;
-  font-family: 'Merriweather', serif;
+  font-family: 'Lora', serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #40484e;
-
+  background-image: linear-gradient(to bottom right, #5877dc, #00353f);
 }
-
+tbody:before {
+  content: "-";
+  display: block;
+  line-height: 1em;
+  color: transparent;
+}

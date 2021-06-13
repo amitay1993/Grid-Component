@@ -4,12 +4,18 @@ import GridComponent from "./Components/Grid-Component";
 
 function App() {
 
-    const fields={
-        "age":"age",
-        "club":"team",
-        "name":"name",
-        "national":"national",
+
+
+    const fields = {
+        "#":null,
+        "age":null,
+        "club": {
+            "label": "team"
+        },
+        "name": null,
+        "national": null,
     }
+
 
 
     const data = [
@@ -20,7 +26,7 @@ function App() {
             "name": "Leonel Messi",
             "national": "Argentina",
             "objectId": "njnpkIM7TZ",
-            "price":"80.00m"
+            "price": "80.00m"
         },
         {
             "age": 29,
@@ -29,7 +35,7 @@ function App() {
             "name": "Cristiano Ronaldo",
             "national": "Portugal",
             "objectId": "bEgzxzo2yC",
-            "price":"130.00m"
+            "price": "130.00m"
 
         },
         {
@@ -39,7 +45,7 @@ function App() {
             "name": "Steven Gerrard",
             "national": "England",
             "objectId": "R6W7SBl0xn",
-            "price":"73.00m"
+            "price": "73.00m"
 
         },
         {
@@ -49,7 +55,7 @@ function App() {
             "name": "Neymar",
             "national": "Brazil",
             "objectId": "uoomjQBD7e",
-            "price":"97.00m"
+            "price": "97.00m"
 
         },
         {
@@ -59,7 +65,7 @@ function App() {
             "name": "Marco Reus",
             "national": "Germany",
             "objectId": "0r5n8j63cj",
-            "price":"22.00m"
+            "price": "22.00m"
 
         },
         {
@@ -69,7 +75,7 @@ function App() {
             "name": "Karim Benzema",
             "national": "France",
             "objectId": "HJDacRcdu8",
-            "price":"30.00m"
+            "price": "30.00m"
 
         },
         {
@@ -79,7 +85,7 @@ function App() {
             "name": "Robin Van Persie",
             "national": "Holland",
             "objectId": "XjxLjTFkd7",
-            "price":"80.00m"
+            "price": "80.00m"
 
         },
         {
@@ -89,7 +95,7 @@ function App() {
             "name": "David Silva",
             "national": "Spain",
             "objectId": "RCmIbI1laP",
-            "price":"61.00m"
+            "price": "61.00m"
 
         },
         {
@@ -99,11 +105,11 @@ function App() {
             "name": "Andrea Pirlo",
             "national": "Italy",
             "objectId": "PinRWZ2qmw",
-            "price":"51.00m"
+            "price": "51.00m"
         }]
 
     return (
-        <GridComponent value={data} fields={fields}/>
+        <GridComponent data={data} fields={fields}/>
     );
 }
 
