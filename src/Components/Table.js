@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Row from "./Row";
 import _ from 'lodash';
+import styled from "styled-components";
+import { ChevronLeft,ChevronRight} from '@styled-icons/material'
 
 
 function Table({fields, data, value, onChange}) {
@@ -9,8 +11,9 @@ function Table({fields, data, value, onChange}) {
     const configurations = {};
     let rows;
 
-
+    const [ascendingOrder,setAscendingOrder]=useState(false)
     const [orderField, setOrderField] = useState();
+    const [selectedRows, setSelectedRows] = useState([{}])
 
 
     useEffect(() => {
@@ -33,15 +36,16 @@ function Table({fields, data, value, onChange}) {
         }
     }
 
-    function changeSortingOrder(key) {
+    const changeSortingOrder = (key) => {
         setOrderField(key);
+        setAscendingOrder(true);
     }
 
 
     const headers = headerNames.map(key =>
         <th>
             <span onClick={() => changeSortingOrder(key)}
-                  className="sortIcon">{orderField === key ? "⬆️" : " 🔽 "}</span> {key}
+                  className="sortIcon">{orderField === key && ascendingOrder  ? "⬆️" : " 🔽 "}</span> {key}
         </th>)
 
 
@@ -59,25 +63,58 @@ function Table({fields, data, value, onChange}) {
         return Object.freeze(o);
     }
 
+    const handleCheckChange = () => {
+        setSelectedRows()
+    }
+
 
     const rowsData = rows.map(object =>
-        <Row key={object.objectId} fields={fields} data={object} config={configurations}/>
+        <Row onChange={handleCheckChange} key={object.objectId} fields={fields} data={object} config={configurations}/>
     )
 
     return (
-        <table>
-            <thead>
-            <tr>
-                {headers}
-            </tr>
-            </thead>
-            <tbody>
-            {rowsData}
-            </tbody>
-        </table>
+        <TableDiv>
+            <table>
+                <thead>
+                <tr>
+                    {headers}
+                </tr>
+                </thead>
+                <tbody>
+                {rowsData}
+                </tbody>
+            </table>
+
+            <FooterDiv>
+                <ArrowsDiv>
+                    <ChevronLeft cursor="pointer" fontSize="20" color="blue" size="90px"/>
+                    <ChevronRight cursor="pointer" fontSize="20" color="blue" size="90px"/>
+                </ArrowsDiv>
+                <p>Page 1 of 10</p>
+            </FooterDiv>
+        </TableDiv>
 
     );
 }
+
+const TableDiv=styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+`;
+
+const ArrowsDiv=styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const FooterDiv=styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
 
 
 export default Table;
