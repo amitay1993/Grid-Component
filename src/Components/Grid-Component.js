@@ -1,20 +1,34 @@
-import React from 'react';
-import Data from "./Row";
+import React, {useCallback, useEffect, useState} from 'react';
+
 import styled from "styled-components";
 import {Search} from '@styled-icons/material'
 import Table from "./Table";
+import {debounce} from "lodash"
 
 
-function GridComponent({data, fields}) {
+function GridComponent({data, fields,onChange}) {
+
+
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const debouncedValue = useCallback(
+        debounce((newValue) => setSearchTerm(newValue), 500), []);
+
+
+    const handleSearch = (event) => {
+        debouncedValue(event.target.value);
+    }
+
+    console.log(searchTerm)
 
 
     return (
         <DatContainer>
             <InputDiv>
-                <input placeholder="search.."/>
+                <input placeholder="search.." onChange={handleSearch}/>
                 <Search fontSize="20" color="white" size="50px"/>
             </InputDiv>
-            <Table data={data} fields={fields}/>
+            <Table data={data} fields={fields} value={searchTerm} onChange={onChange}/>
         </DatContainer>
     );
 }
@@ -25,12 +39,10 @@ const DatContainer = styled.div`
   height: 80vh;
   width: 80vw;
   background-color: whitesmoke;
-  overflow: auto;
 
 
   thead th {
-    background-color: lightgray;
-    box-shadow: 5px 5px 5px rgba(0, 20, 150, 0.3);
+    background-color: rgba(0, 95, 115,0.5);
     border-radius: 2px;
     padding: 0.5rem;
     font-size: 20px;
@@ -38,7 +50,7 @@ const DatContainer = styled.div`
   }
 
   th {
-    box-shadow: 3px 3px 3px rgba(0, 0, 50, 0.3);
+
     border-radius: 2px;
     padding: 0.2rem;
     font-size: 20px;
@@ -51,10 +63,11 @@ const DatContainer = styled.div`
     width: 20px;
     height: 20px;
   }
-  
-  .inputDiv{
+
+  .inputDiv {
     display: flex;
     justify-content: center;
+
   }
 
 `;
@@ -73,8 +86,6 @@ const InputDiv = styled.div`
     background-color: #cccdd0;
     padding: 0.5rem;
   }
-
-
 `;
 
 

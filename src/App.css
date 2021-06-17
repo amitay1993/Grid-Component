@@ -10,11 +10,18 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(to bottom right, #5877dc, #00353f);
+    background-image: linear-gradient(to bottom right, #005F73  ,#94D2BD);
 }
 tbody:before {
   content: "-";
   display: block;
   line-height: 1em;
   color: transparent;
+}
+
+tbody tr:nth-child(2n){
+  background-color: rgba(148, 210, 189,0.2);
+}
+.sortIcon{
+  cursor: pointer;
 }

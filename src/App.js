@@ -1,14 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import GridComponent from "./Components/Grid-Component";
+import {useState} from "react";
 
 function App() {
 
 
-
     const fields = {
-        "#":null,
-        "age":null,
+        "#": null,
+        "age": null,
         "club": {
             "label": "team"
         },
@@ -17,8 +17,7 @@ function App() {
     }
 
 
-
-    const data = [
+    const [data, setData] = useState([
         {
             "age": 27,
             "club": "Barcelona",
@@ -98,6 +97,7 @@ function App() {
             "price": "61.00m"
 
         },
+
         {
             "age": 35,
             "club": "Juventus",
@@ -106,10 +106,15 @@ function App() {
             "national": "Italy",
             "objectId": "PinRWZ2qmw",
             "price": "51.00m"
-        }]
+        }])
+
+    const handleDataChange = (newData) => {
+        setData(newData);
+    }
+
 
     return (
-        <GridComponent data={data} fields={fields}/>
+        <GridComponent data={data} fields={fields} onChange={handleDataChange}/>
     );
 }
 
