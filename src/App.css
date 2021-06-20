@@ -26,10 +26,6 @@ tbody tr:nth-child(2n){
   background-color: rgba(148, 210, 189,0.2);
 }
 
-.btn{
-  background-color: dodgerblue;
-  color: whitesmoke;
-}
 
 .sortIcon{
   cursor: pointer;

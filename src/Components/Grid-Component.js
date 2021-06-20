@@ -1,25 +1,33 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import styled from "styled-components";
 import {Search} from '@styled-icons/material'
 import Table from "./Table";
 import {debounce} from "lodash"
+import _ from 'lodash';
 
 
-function GridComponent({data, fields,onChange}) {
+function GridComponent({data, fields, onChange}) {
 
+    const [orderField, setOrderField] = useState({orderField: null, isAsc: false});
+    const [currentIndex, setCurrentIndex] = useState(1);
+    const memoizedValue = useMemo(() => {
+        let sortedArr = _.orderBy(data, orderField.orderField, orderField.isAsc ? "desc" : "asc");
+        console.log(sortedArr)
+        return _.chunk(sortedArr, fields.rowsPerPage);
 
+    }, [data, fields.rowsPerPage, orderField]);
     const [searchTerm, setSearchTerm] = useState("");
 
+
     const debouncedValue = useCallback(
-        debounce((newValue) => setSearchTerm(newValue), 500), []);
+        debounce((newValue) => setSearchTerm(newValue), 500), []
+    );
 
 
     const handleSearch = (event) => {
         debouncedValue(event.target.value);
     }
-
-    console.log(searchTerm)
 
 
     return (
@@ -28,7 +36,12 @@ function GridComponent({data, fields,onChange}) {
                 <input placeholder="search.." onChange={handleSearch}/>
                 <Search fontSize="20" color="white" size="50px"/>
             </InputDiv>
-            <Table data={data} fields={fields} value={searchTerm} onChange={onChange}/>
+            <Table
+                setCurrentIndex={setCurrentIndex}
+                currentIndex={currentIndex} orderField={orderField} setSortingOrder={setOrderField}
+                maxPages={memoizedValue.length}
+                data={memoizedValue[currentIndex-1]} fields={fields}
+                value={searchTerm} onChange={onChange}/>
         </DatContainer>
     );
 }
@@ -42,7 +55,7 @@ const DatContainer = styled.div`
 
 
   thead th {
-    background-color: rgba(0, 95, 115,0.5);
+    background-color: rgba(0, 95, 115, 0.5);
     border-radius: 2px;
     padding: 0.5rem;
     font-size: 20px;

@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import GridComponent from "./Components/Grid-Component";
 import {useState} from "react";
+import _ from "lodash";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         },
         "name": null,
         "national": null,
+        "rowsPerPage":3,
     }
 
 
@@ -108,13 +110,10 @@ function App() {
             "price": "51.00m"
         }])
 
-    const handleDataChange = (newData) => {
-        setData(newData);
-    }
 
 
     return (
-        <GridComponent data={data} fields={fields} onChange={handleDataChange}/>
+        <GridComponent data={data} fields={fields}/>
     );
 }
 
