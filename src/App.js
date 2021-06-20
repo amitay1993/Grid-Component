@@ -1,8 +1,8 @@
-import logo from './logo.svg';
+
 import './App.css';
 import GridComponent from "./Components/Grid-Component";
 import {useState} from "react";
-import _ from "lodash";
+
 
 function App() {
 
@@ -19,7 +19,7 @@ function App() {
     }
 
 
-    const [data, setData] = useState([
+    const [data,] = useState([
         {
             "age": 27,
             "club": "Barcelona",

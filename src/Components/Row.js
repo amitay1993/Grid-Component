@@ -1,18 +1,18 @@
 import React from 'react';
 import Cell from "./Cell";
-import styled from "styled-components";
 
-const Row = ({data, fields,onChange}) => {
 
+const Row = ({selected, data, fields, onChange}) => {
+
+
+    console.log(selected)
 
     const row = [];
     row.push(
-        <div className="inputDiv" >
-            <input onChange={onChange} className="checkbox" type="checkbox"/>
-        </div>
-
+        <td className="inputDiv">
+            <input checked={selected} id={data.objectId} onChange={onChange} className="checkbox" type="checkbox"/>
+        </td>
     )
-
 
 
     for (const key in data) {
@@ -23,10 +23,14 @@ const Row = ({data, fields,onChange}) => {
 
 
     return (
-        <tr>{row}</tr>
+        <tr data-select={selected}>{row}</tr>
     );
 };
 
+
+// const TableRow = styled.tr`
+//   background-color: ${props => props.selected ? "rgba(148, 210, 189,0.2)" : "white"};
+// `;
 
 
 export default Row;

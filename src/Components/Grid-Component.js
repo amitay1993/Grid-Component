@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 
 import styled from "styled-components";
 import {Search} from '@styled-icons/material'
@@ -38,9 +38,12 @@ function GridComponent({data, fields, onChange}) {
             </InputDiv>
             <Table
                 setCurrentIndex={setCurrentIndex}
-                currentIndex={currentIndex} orderField={orderField} setSortingOrder={setOrderField}
+                currentIndex={currentIndex}
+                orderField={orderField}
+                setSortingOrder={setOrderField}
                 maxPages={memoizedValue.length}
-                data={memoizedValue[currentIndex-1]} fields={fields}
+                data={memoizedValue[currentIndex - 1]}
+                fields={fields}
                 value={searchTerm} onChange={onChange}/>
         </DatContainer>
     );

@@ -3,7 +3,7 @@ import React from 'react';
 const Cell = ({value}) => {
 
     return (
-       <th>{value}</th>
+       <td>{value}</td>
     );
 };
 

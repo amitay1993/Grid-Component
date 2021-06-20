@@ -22,11 +22,7 @@ table{
   width: 100%;
 }
 
-tbody tr:nth-child(2n){
-  background-color: rgba(148, 210, 189,0.2);
-}
-
-
 .sortIcon{
   cursor: pointer;
 }
+
