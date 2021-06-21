@@ -7,7 +7,6 @@ function Header({ value, orderField, fields, changeSortingOrder }) {
   let label;
   if (fields.hasOwnProperty(value) && fields[value]) {
     label = fields[value].label;
-    console.log(label);
   }
 
   return (
