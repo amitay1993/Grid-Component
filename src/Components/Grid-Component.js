@@ -7,17 +7,23 @@ import {debounce} from "lodash"
 import _ from 'lodash';
 
 
-function GridComponent({data, fields, onChange}) {
+function GridComponent({data, fields}) {
 
     const [orderField, setOrderField] = useState({orderField: null, isAsc: false});
     const [currentIndex, setCurrentIndex] = useState(1);
+     const [searchTerm, setSearchTerm] = useState("");     
     const memoizedValue = useMemo(() => {
         let sortedArr = _.orderBy(data, orderField.orderField, orderField.isAsc ? "desc" : "asc");
-        console.log(sortedArr)
-        return _.chunk(sortedArr, fields.rowsPerPage);
+        console.log(sortedArr);
+        if (searchTerm) {
+            return sortedArr;
+        } else {
+            return _.chunk(sortedArr, fields.rowsPerPage);
+        }
+
 
     }, [data, fields.rowsPerPage, orderField]);
-    const [searchTerm, setSearchTerm] = useState("");
+
 
 
     const debouncedValue = useCallback(
@@ -42,9 +48,10 @@ function GridComponent({data, fields, onChange}) {
                 orderField={orderField}
                 setSortingOrder={setOrderField}
                 maxPages={memoizedValue.length}
+                allRows={data}
                 data={memoizedValue[currentIndex - 1]}
                 fields={fields}
-                value={searchTerm} onChange={onChange}/>
+                value={searchTerm}/>
         </DatContainer>
     );
 }

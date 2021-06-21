@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@styled-icons/material": "^10.34.0"
+    "@styled-icons/material": "^10.34.0",
+    "prettier": "^2.3.1"
   }
 }

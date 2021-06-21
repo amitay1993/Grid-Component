@@ -1,4 +1,3 @@
-
 import './App.css';
 import GridComponent from "./Components/Grid-Component";
 import {useState} from "react";
@@ -7,15 +6,22 @@ import {useState} from "react";
 function App() {
 
 
+    const moneyComponent = (props) => {
+        return <span> {props.text + "💰"} </span>;
+    }
+
+
     const fields = {
         "#": null,
         "age": null,
-        "club": {
-            "label": "team"
-        },
+        "club": null,
         "name": null,
         "national": null,
-        "rowsPerPage":3,
+        "rowsPerPage": 3,
+        "price": {
+            "component": moneyComponent
+        },
+        "thead": false,
     }
 
 
@@ -27,7 +33,7 @@ function App() {
             "name": "Leonel Messi",
             "national": "Argentina",
             "objectId": "njnpkIM7TZ",
-            "price": "80.00m"
+            "price": 80.00
         },
         {
             "age": 29,
@@ -36,7 +42,7 @@ function App() {
             "name": "Cristiano Ronaldo",
             "national": "Portugal",
             "objectId": "bEgzxzo2yC",
-            "price": "130.00m"
+            "price": 130.00
 
         },
         {
@@ -46,7 +52,7 @@ function App() {
             "name": "Steven Gerrard",
             "national": "England",
             "objectId": "R6W7SBl0xn",
-            "price": "73.00m"
+            "price": 73.00
 
         },
         {
@@ -56,7 +62,7 @@ function App() {
             "name": "Neymar",
             "national": "Brazil",
             "objectId": "uoomjQBD7e",
-            "price": "97.00m"
+            "price": 97.00
 
         },
         {
@@ -66,7 +72,7 @@ function App() {
             "name": "Marco Reus",
             "national": "Germany",
             "objectId": "0r5n8j63cj",
-            "price": "22.00m"
+            "price": 22.00
 
         },
         {
@@ -76,7 +82,7 @@ function App() {
             "name": "Karim Benzema",
             "national": "France",
             "objectId": "HJDacRcdu8",
-            "price": "30.00m"
+            "price": 30.00
 
         },
         {
@@ -86,7 +92,7 @@ function App() {
             "name": "Robin Van Persie",
             "national": "Holland",
             "objectId": "XjxLjTFkd7",
-            "price": "80.00m"
+            "price": 80.00
 
         },
         {
@@ -96,7 +102,7 @@ function App() {
             "name": "David Silva",
             "national": "Spain",
             "objectId": "RCmIbI1laP",
-            "price": "61.00m"
+            "price": 61.00
 
         },
 
@@ -107,9 +113,8 @@ function App() {
             "name": "Andrea Pirlo",
             "national": "Italy",
             "objectId": "PinRWZ2qmw",
-            "price": "51.00m"
+            "price": 51.00
         }])
-
 
 
     return (

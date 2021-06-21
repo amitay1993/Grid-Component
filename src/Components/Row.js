@@ -2,10 +2,8 @@ import React from 'react';
 import Cell from "./Cell";
 
 
-const Row = ({selected, data, fields, onChange}) => {
+const Row = ({selected, config, data, fields, onChange}) => {
 
-
-    console.log(selected)
 
     const row = [];
     row.push(
@@ -17,7 +15,7 @@ const Row = ({selected, data, fields, onChange}) => {
 
     for (const key in data) {
         if (fields.hasOwnProperty(key)) {
-            row.push(<Cell value={data[key]}/>);
+            row.push(<Cell config={config} property={key} value={data[key]}/>);
         }
     }
 
