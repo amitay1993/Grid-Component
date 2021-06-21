@@ -10,13 +10,12 @@ import {
 } from "@styled-icons/material";
 import ArrowUp from "./ArrowUp";
 import ArrowDown from "./ArrowDown";
+import Header from "./Header";
 
 function Table({
   currentIndex,
   setCurrentIndex,
   fields,
-  data,
-  allRows,
   value,
   orderField,
   maxPages,
@@ -32,37 +31,26 @@ function Table({
     if (key !== "rowsPerPage" && key !== "style") {
       headerNames.push(key);
     }
-    if (fields[key]) {
-      //we have extra configurations
-      for (const config in fields[key]) {
-        configurations[key] = fields[key][config];
-      }
-    }
+    // if (fields[key]) {
+    //   for (const config in fields[key]) {
+    //     configurations[key] = fields[key][config];
+    //   }
+    // }
   }
 
   const changeSortingOrder = (key, direction) => {
     setSortingOrder({ orderField: key, isAsc: direction });
   };
 
-  const headers = headerNames.map((key) => {
-    return (
-      <th>
-        <ArrowUp
-          selected={orderField.orderField === key && orderField.isAsc}
-          value={key}
-          changeSortingOrder={changeSortingOrder}
-        />
-        <ArrowDown
-          selected={orderField.orderField === key && !orderField.isAsc}
-          value={key}
-          changeSortingOrder={changeSortingOrder}
-        />
-        {key}
-      </th>
-    );
-  });
-
-  // console.log(_.sortBy(rows, ['age']));
+  const headers = headerNames.map((key) => (
+    <Header
+      // config={fields}
+      value={key}
+      orderField={orderField}
+      changeSortingOrder={changeSortingOrder}
+      fields={fields}
+    />
+  ));
 
   const handleCheckChange = (event) => {
     const rowId = event.target.id;
@@ -75,7 +63,7 @@ function Table({
     });
   };
 
-  const rowsData = data.map((object) => {
+  const rowsData = value.map((object) => {
     objectIds.push(object.objectId);
     return (
       <Row
@@ -83,7 +71,7 @@ function Table({
         onChange={handleCheckChange}
         key={object.objectId}
         fields={fields}
-        data={object}
+        value={object}
         config={configurations}
       />
     );
@@ -91,18 +79,10 @@ function Table({
 
   const numberOfSelectedItemsPerPage = _.intersection(selectedRows, objectIds);
 
-  function deepFreeze(o) {
-    // "use strict";
-    Object.keys(o).forEach((prop) => {
-      if (typeof o[prop] === "object") deepFreeze(o[prop]);
-    });
-    return Object.freeze(o);
-  }
-
   return (
     <TableDiv striped={fields.style.striped}>
       <table>
-        {fields.style.thead && (
+        {fields.style.thead.show && (
           <thead>
             <tr>{headers}</tr>
           </thead>
@@ -167,6 +147,7 @@ const TableDiv = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+
   & tbody tr {
     background-color: white;
   }

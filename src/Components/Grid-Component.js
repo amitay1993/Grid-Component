@@ -1,12 +1,11 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-
+import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Search } from "@styled-icons/material";
-import Table from "./Table";
 import { debounce } from "lodash";
 import _ from "lodash";
+import Table from "./Table";
 
-function GridComponent({ data, fields }) {
+function GridComponent({ value, fields }) {
   const [orderField, setOrderField] = useState({
     orderField: null,
     isAsc: false,
@@ -16,7 +15,7 @@ function GridComponent({ data, fields }) {
   const memoizedValue = useMemo(() => {
     let rows;
     let sortedArr = _.orderBy(
-      data,
+      value,
       orderField.orderField,
       orderField.isAsc ? "desc" : "asc"
     );
@@ -30,7 +29,7 @@ function GridComponent({ data, fields }) {
     } else {
       return _.chunk(sortedArr, fields.rowsPerPage);
     }
-  }, [data, fields.rowsPerPage, orderField, searchTerm]);
+  }, [value, fields.rowsPerPage, orderField, searchTerm]);
 
   const debouncedValue = useCallback(
     debounce((newValue) => setSearchTerm(newValue), 500),
@@ -42,7 +41,7 @@ function GridComponent({ data, fields }) {
   };
 
   return (
-    <DatContainer>
+    <DataContainer>
       <InputDiv>
         <input placeholder="search.." onChange={handleSearch} />
         <Search fontSize="20" color="white" size="50px" />
@@ -53,36 +52,19 @@ function GridComponent({ data, fields }) {
         orderField={orderField}
         setSortingOrder={setOrderField}
         maxPages={memoizedValue.length}
-        allRows={data}
-        data={memoizedValue[currentIndex - 1]}
+        value={memoizedValue[currentIndex - 1]}
         fields={fields}
-        //value={searchTerm}
       />
-    </DatContainer>
+    </DataContainer>
   );
 }
 
-const DatContainer = styled.div`
+const DataContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 80vh;
   width: 80vw;
   background-color: whitesmoke;
-
-  thead th {
-    background-color: rgba(0, 95, 115, 0.5);
-    border-radius: 2px;
-    padding: 0.5rem;
-    font-size: 20px;
-    border: dimgray;
-  }
-
-  th {
-    border-radius: 2px;
-    padding: 0.2rem;
-    font-size: 20px;
-    border: dimgray;
-  }
 
   .checkbox {
     outline: 1px solid dimgray;

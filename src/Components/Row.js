@@ -1,34 +1,30 @@
-import React from 'react';
+import React from "react";
 import Cell from "./Cell";
 
+const Row = ({ selected, config, value, fields, onChange }) => {
+  const row = [];
+  // console.log(value);
+  row.push(
+    <td className="inputDiv">
+      <input
+        checked={selected}
+        id={value.objectId}
+        onChange={onChange}
+        className="checkbox"
+        type="checkbox"
+      />
+    </td>
+  );
 
-const Row = ({selected, config, data, fields, onChange}) => {
-
-
-    const row = [];
-    row.push(
-        <td className="inputDiv">
-            <input checked={selected} id={data.objectId} onChange={onChange} className="checkbox" type="checkbox"/>
-        </td>
-    )
-
-
-    for (const key in data) {
-        if (fields.hasOwnProperty(key)) {
-            row.push(<Cell config={config} property={key} value={data[key]}/>);
-        }
+  for (const key in value) {
+    if (fields.hasOwnProperty(key)) {
+      // console.log(value[key]);
+      // console.log(key);
+      row.push(<Cell config={config} property={key} value={value[key]} />);
     }
+  }
 
-
-    return (
-        <tr data-select={selected}>{row}</tr>
-    );
+  return <tr data-select={selected}>{row}</tr>;
 };
-
-
-// const TableRow = styled.tr`
-//   background-color: ${props => props.selected ? "rgba(148, 210, 189,0.2)" : "white"};
-// `;
-
 
 export default Row;

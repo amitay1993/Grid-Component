@@ -10,7 +10,9 @@ function App() {
   const fields = {
     "#": null,
     age: null,
-    club: null,
+    club: {
+      label: "team",
+    },
     name: null,
     national: null,
     rowsPerPage: 3,
@@ -19,7 +21,7 @@ function App() {
     },
     style: {
       thead: {
-        color: "red",
+        color: null,
         show: true,
       },
       striped: true,
@@ -111,7 +113,7 @@ function App() {
     },
   ]);
 
-  return <GridComponent data={data} fields={fields} />;
+  return <GridComponent value={data} fields={fields} />;
 }
 
 export default App;
