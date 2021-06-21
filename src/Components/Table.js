@@ -24,13 +24,12 @@ function Table({
 }) {
   const headerNames = [];
   const configurations = {};
-  let rows;
   let objectIds = [];
 
   const [selectedRows, setSelectedRows] = useState([]);
 
   for (const key in fields) {
-    if (key !== "rowsPerPage") {
+    if (key !== "rowsPerPage" && key !== "style") {
       headerNames.push(key);
     }
     if (fields[key]) {
@@ -62,15 +61,6 @@ function Table({
       </th>
     );
   });
-  if (value) {
-    rows = allRows.filter((object) =>
-      Object.values(object).toString().toLowerCase().includes(value)
-    );
-  } else {
-    rows = data.filter((object) =>
-      Object.values(object).toString().toLowerCase().includes(value)
-    );
-  }
 
   // console.log(_.sortBy(rows, ['age']));
 
@@ -85,7 +75,7 @@ function Table({
     });
   };
 
-  const rowsData = rows.map((object) => {
+  const rowsData = data.map((object) => {
     objectIds.push(object.objectId);
     return (
       <Row
@@ -100,7 +90,6 @@ function Table({
   });
 
   const numberOfSelectedItemsPerPage = _.intersection(selectedRows, objectIds);
-  console.log(numberOfSelectedItemsPerPage);
 
   function deepFreeze(o) {
     // "use strict";
@@ -111,9 +100,9 @@ function Table({
   }
 
   return (
-    <TableDiv>
+    <TableDiv striped={fields.style.striped}>
       <table>
-        {fields.thead && (
+        {fields.style.thead && (
           <thead>
             <tr>{headers}</tr>
           </thead>
@@ -178,9 +167,12 @@ const TableDiv = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+  & tbody tr {
+    background-color: white;
+  }
 
   & tbody tr:nth-child(odd) {
-    background-color: rgba(148, 210, 189, 0.2);
+    background-color: ${(props) => props.striped && "rgba(148, 210, 189, 0.2)"};
   }
 
   & tbody tr[data-select="true"] {

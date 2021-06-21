@@ -1,59 +1,65 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import styled from "styled-components";
-import {Search} from '@styled-icons/material'
+import { Search } from "@styled-icons/material";
 import Table from "./Table";
-import {debounce} from "lodash"
-import _ from 'lodash';
+import { debounce } from "lodash";
+import _ from "lodash";
 
-
-function GridComponent({data, fields}) {
-
-    const [orderField, setOrderField] = useState({orderField: null, isAsc: false});
-    const [currentIndex, setCurrentIndex] = useState(1);
-     const [searchTerm, setSearchTerm] = useState("");     
-    const memoizedValue = useMemo(() => {
-        let sortedArr = _.orderBy(data, orderField.orderField, orderField.isAsc ? "desc" : "asc");
-        console.log(sortedArr);
-        if (searchTerm) {
-            return sortedArr;
-        } else {
-            return _.chunk(sortedArr, fields.rowsPerPage);
-        }
-
-
-    }, [data, fields.rowsPerPage, orderField]);
-
-
-
-    const debouncedValue = useCallback(
-        debounce((newValue) => setSearchTerm(newValue), 500), []
+function GridComponent({ data, fields }) {
+  const [orderField, setOrderField] = useState({
+    orderField: null,
+    isAsc: false,
+  });
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const memoizedValue = useMemo(() => {
+    let rows;
+    let sortedArr = _.orderBy(
+      data,
+      orderField.orderField,
+      orderField.isAsc ? "desc" : "asc"
     );
+    if (searchTerm) {
+      rows = sortedArr.filter((object) =>
+        Object.values(object).toString().toLowerCase().includes(searchTerm)
+      );
+      rows = _.chunk(rows, fields.rowsPerPage);
 
-
-    const handleSearch = (event) => {
-        debouncedValue(event.target.value);
+      return rows;
+    } else {
+      return _.chunk(sortedArr, fields.rowsPerPage);
     }
+  }, [data, fields.rowsPerPage, orderField, searchTerm]);
 
+  const debouncedValue = useCallback(
+    debounce((newValue) => setSearchTerm(newValue), 500),
+    []
+  );
 
-    return (
-        <DatContainer>
-            <InputDiv>
-                <input placeholder="search.." onChange={handleSearch}/>
-                <Search fontSize="20" color="white" size="50px"/>
-            </InputDiv>
-            <Table
-                setCurrentIndex={setCurrentIndex}
-                currentIndex={currentIndex}
-                orderField={orderField}
-                setSortingOrder={setOrderField}
-                maxPages={memoizedValue.length}
-                allRows={data}
-                data={memoizedValue[currentIndex - 1]}
-                fields={fields}
-                value={searchTerm}/>
-        </DatContainer>
-    );
+  const handleSearch = (event) => {
+    debouncedValue(event.target.value);
+  };
+
+  return (
+    <DatContainer>
+      <InputDiv>
+        <input placeholder="search.." onChange={handleSearch} />
+        <Search fontSize="20" color="white" size="50px" />
+      </InputDiv>
+      <Table
+        setCurrentIndex={setCurrentIndex}
+        currentIndex={currentIndex}
+        orderField={orderField}
+        setSortingOrder={setOrderField}
+        maxPages={memoizedValue.length}
+        allRows={data}
+        data={memoizedValue[currentIndex - 1]}
+        fields={fields}
+        //value={searchTerm}
+      />
+    </DatContainer>
+  );
 }
 
 const DatContainer = styled.div`
@@ -62,7 +68,6 @@ const DatContainer = styled.div`
   height: 80vh;
   width: 80vw;
   background-color: whitesmoke;
-
 
   thead th {
     background-color: rgba(0, 95, 115, 0.5);
@@ -73,7 +78,6 @@ const DatContainer = styled.div`
   }
 
   th {
-
     border-radius: 2px;
     padding: 0.2rem;
     font-size: 20px;
@@ -90,9 +94,7 @@ const DatContainer = styled.div`
   .inputDiv {
     display: flex;
     justify-content: center;
-
   }
-
 `;
 
 const InputDiv = styled.div`
@@ -110,6 +112,5 @@ const InputDiv = styled.div`
     padding: 0.5rem;
   }
 `;
-
 
 export default GridComponent;
