@@ -1,13 +1,12 @@
 import "./App.css";
 import GridComponent from "./Components/Grid-Component";
-import { useState } from "react";
 
 function App() {
   const moneyComponent = (props) => {
     return <span> {props.text + "💰"} </span>;
   };
 
-  const fields = {
+  const columnDefinition = {
     "#": null,
     age: null,
     club: {
@@ -15,10 +14,11 @@ function App() {
     },
     name: null,
     national: null,
-    rowsPerPage: 3,
+
     price: {
       component: moneyComponent,
     },
+    rowsPerPage: 3,
     style: {
       thead: {
         color: null,
@@ -28,7 +28,7 @@ function App() {
     },
   };
 
-  const [data] = useState([
+  const rows = [
     {
       age: 27,
       club: "Barcelona",
@@ -111,9 +111,11 @@ function App() {
       objectId: "PinRWZ2qmw",
       price: 51.0,
     },
-  ]);
+  ];
 
-  return <GridComponent value={data} fields={fields} />;
+  //TODO:change names
+
+  return <GridComponent value={rows} fields={columnDefinition} />;
 }
 
 export default App;

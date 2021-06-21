@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Search } from "@styled-icons/material";
-import { debounce } from "lodash";
-import _ from "lodash";
+import debounce from "lodash/debounce";
+import orderBy from "lodash/orderBy";
+import chunk from "lodash/chunk";
 import Table from "./Table";
 
 function GridComponent({ value, fields }) {
@@ -12,9 +13,10 @@ function GridComponent({ value, fields }) {
   });
   const [currentIndex, setCurrentIndex] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+
   const memoizedValue = useMemo(() => {
     let rows;
-    let sortedArr = _.orderBy(
+    let sortedArr = orderBy(
       value,
       orderField.orderField,
       orderField.isAsc ? "desc" : "asc"
@@ -23,11 +25,10 @@ function GridComponent({ value, fields }) {
       rows = sortedArr.filter((object) =>
         Object.values(object).toString().toLowerCase().includes(searchTerm)
       );
-      rows = _.chunk(rows, fields.rowsPerPage);
-
+      rows = chunk(rows, fields.rowsPerPage);
       return rows;
     } else {
-      return _.chunk(sortedArr, fields.rowsPerPage);
+      return chunk(sortedArr, fields.rowsPerPage);
     }
   }, [value, fields.rowsPerPage, orderField, searchTerm]);
 
@@ -38,14 +39,16 @@ function GridComponent({ value, fields }) {
 
   const handleSearch = (event) => {
     debouncedValue(event.target.value);
+    //debounce(() => setSearchTerm(event.target.value), 500)();
   };
+  //TODO:
 
   return (
     <DataContainer>
-      <InputDiv>
+      <SearchConatiner>
         <input placeholder="search.." onChange={handleSearch} />
         <Search fontSize="20" color="white" size="50px" />
-      </InputDiv>
+      </SearchConatiner>
       <Table
         setCurrentIndex={setCurrentIndex}
         currentIndex={currentIndex}
@@ -79,7 +82,7 @@ const DataContainer = styled.div`
   }
 `;
 
-const InputDiv = styled.div`
+const SearchConatiner = styled.div`
   display: flex;
   height: 50px;
   background-color: #333;

@@ -1,41 +1,30 @@
 import React, { useState } from "react";
 import Row from "./Row";
-import _ from "lodash";
+import intersection from "lodash/intersection";
 import styled from "styled-components";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ArrowUpward,
-  ArrowDownward,
-} from "@styled-icons/material";
-import ArrowUp from "./ArrowUp";
-import ArrowDown from "./ArrowDown";
+import { ChevronLeft, ChevronRight } from "@styled-icons/material";
 import Header from "./Header";
 
 function Table({
   currentIndex,
   setCurrentIndex,
   fields,
-  value,
+  value = [],
   orderField,
   maxPages,
   setSortingOrder,
 }) {
   const headerNames = [];
-  const configurations = {};
-  let objectIds = [];
+  let objectIds;
 
   const [selectedRows, setSelectedRows] = useState([]);
+
+  objectIds = value.map((row) => row.objectId);
 
   for (const key in fields) {
     if (key !== "rowsPerPage" && key !== "style") {
       headerNames.push(key);
     }
-    // if (fields[key]) {
-    //   for (const config in fields[key]) {
-    //     configurations[key] = fields[key][config];
-    //   }
-    // }
   }
 
   const changeSortingOrder = (key, direction) => {
@@ -44,7 +33,6 @@ function Table({
 
   const headers = headerNames.map((key) => (
     <Header
-      // config={fields}
       value={key}
       orderField={orderField}
       changeSortingOrder={changeSortingOrder}
@@ -63,21 +51,19 @@ function Table({
     });
   };
 
-  const rowsData = value.map((object) => {
-    objectIds.push(object.objectId);
+  const rowsData = value.map((row) => {
     return (
       <Row
-        selected={selectedRows.includes(object.objectId)}
+        selected={selectedRows.includes(row.objectId)}
         onChange={handleCheckChange}
-        key={object.objectId}
+        key={row.objectId}
         fields={fields}
-        value={object}
-        config={configurations}
+        value={row}
       />
     );
   });
 
-  const numberOfSelectedItemsPerPage = _.intersection(selectedRows, objectIds);
+  const numberOfSelectedItemsPerPage = intersection(selectedRows, objectIds);
 
   return (
     <TableDiv striped={fields.style.striped}>
@@ -104,6 +90,7 @@ function Table({
                   color={currentIndex > 1 ? "blue" : "grey"}
                   size="90px"
                   onClick={() =>
+                    //TODO change name to currentPage
                     setCurrentIndex(
                       currentIndex > 1 ? currentIndex - 1 : currentIndex
                     )

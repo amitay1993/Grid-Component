@@ -1,9 +1,8 @@
 import React from "react";
 import Cell from "./Cell";
 
-const Row = ({ selected, config, value, fields, onChange }) => {
+const Row = ({ selected, value, fields, onChange }) => {
   const row = [];
-  // console.log(value);
   row.push(
     <td className="inputDiv">
       <input
@@ -20,7 +19,7 @@ const Row = ({ selected, config, value, fields, onChange }) => {
     if (fields.hasOwnProperty(key)) {
       // console.log(value[key]);
       // console.log(key);
-      row.push(<Cell config={config} property={key} value={value[key]} />);
+      row.push(<Cell config={fields} property={key} value={value[key]} />);
     }
   }
 
