@@ -3,14 +3,14 @@ import styled from "styled-components";
 import ArrowUp from "./ArrowUp";
 import ArrowDown from "./ArrowDown";
 
-function Header({ value, orderField, fields, changeSortingOrder }) {
+function Header({ value, orderField, columnDefinitions, changeSortingOrder }) {
   let label;
-  if (fields.hasOwnProperty(value) && fields[value]) {
-    label = fields[value].label;
+  if (columnDefinitions.hasOwnProperty(value) && columnDefinitions[value]) {
+    label = columnDefinitions[value].label;
   }
 
   return (
-    <TableHeader color={fields.style.thead.color}>
+    <TableHeader color={columnDefinitions.style.thead.color}>
       <ArrowUp
         selected={orderField.orderField === value && orderField.isAsc}
         value={value}

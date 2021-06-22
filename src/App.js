@@ -1,13 +1,12 @@
 import "./App.css";
-import GridComponent from "./Components/Grid-Component";
+import GridComponent from "./Components/GridComponent";
 
 function App() {
   const moneyComponent = (props) => {
     return <span> {props.text + "💰"} </span>;
   };
 
-  const columnDefinition = {
-    "#": null,
+  const columnDefinitions = {
     age: null,
     club: {
       label: "team",
@@ -113,9 +112,7 @@ function App() {
     },
   ];
 
-  //TODO:change names
-
-  return <GridComponent value={rows} fields={columnDefinition} />;
+  return <GridComponent value={rows} columnDefinitions={columnDefinitions} />;
 }
 
 export default App;

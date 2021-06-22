@@ -8,7 +8,7 @@ import Header from "./Header";
 function Table({
   currentIndex,
   setCurrentIndex,
-  fields,
+  columnDefinitions,
   value = [],
   orderField,
   maxPages,
@@ -21,7 +21,7 @@ function Table({
 
   objectIds = value.map((row) => row.objectId);
 
-  for (const key in fields) {
+  for (const key in columnDefinitions) {
     if (key !== "rowsPerPage" && key !== "style") {
       headerNames.push(key);
     }
@@ -36,7 +36,7 @@ function Table({
       value={key}
       orderField={orderField}
       changeSortingOrder={changeSortingOrder}
-      fields={fields}
+      columnDefinitions={columnDefinitions}
     />
   ));
 
@@ -57,7 +57,7 @@ function Table({
         selected={selectedRows.includes(row.objectId)}
         onChange={handleCheckChange}
         key={row.objectId}
-        fields={fields}
+        columnDefinitions={columnDefinitions}
         value={row}
       />
     );
@@ -66,9 +66,9 @@ function Table({
   const numberOfSelectedItemsPerPage = intersection(selectedRows, objectIds);
 
   return (
-    <TableDiv striped={fields.style.striped}>
+    <TableDiv striped={columnDefinitions.style.striped}>
       <table>
-        {fields.style.thead.show && (
+        {columnDefinitions.style.thead.show && (
           <thead>
             <tr>{headers}</tr>
           </thead>

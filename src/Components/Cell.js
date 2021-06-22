@@ -2,18 +2,17 @@ import React from "react";
 
 const DefaultCell = ({ text }) => <span>{text}</span>;
 
-const Cell = ({ config, value, property }) => {
+const Cell = ({ columnDefinitions, value, property }) => {
   let component;
 
-  if (config.hasOwnProperty(property) && config[property]) {
-    component = config[property].component;
+  if (
+    columnDefinitions.hasOwnProperty(property) &&
+    columnDefinitions[property]
+  ) {
+    component = columnDefinitions[property].component;
   }
-  // let Val = undefined;
-  // if (config[property]) {
-  //     console.log(config[property]);
 
   const Val = component || DefaultCell;
-  // }
 
   return (
     <td>

@@ -6,13 +6,15 @@ import orderBy from "lodash/orderBy";
 import chunk from "lodash/chunk";
 import Table from "./Table";
 
-function GridComponent({ value, fields }) {
+function GridComponent({ value, columnDefinitions }) {
   const [orderField, setOrderField] = useState({
     orderField: null,
     isAsc: false,
   });
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+
+  columnDefinitions["#"] = null;
 
   const memoizedValue = useMemo(() => {
     let rows;
@@ -25,12 +27,12 @@ function GridComponent({ value, fields }) {
       rows = sortedArr.filter((object) =>
         Object.values(object).toString().toLowerCase().includes(searchTerm)
       );
-      rows = chunk(rows, fields.rowsPerPage);
+      rows = chunk(rows, columnDefinitions.rowsPerPage);
       return rows;
     } else {
-      return chunk(sortedArr, fields.rowsPerPage);
+      return chunk(sortedArr, columnDefinitions.rowsPerPage);
     }
-  }, [value, fields.rowsPerPage, orderField, searchTerm]);
+  }, [value, columnDefinitions.rowsPerPage, orderField, searchTerm]);
 
   const debouncedValue = useCallback(
     debounce((newValue) => setSearchTerm(newValue), 500),
@@ -39,24 +41,22 @@ function GridComponent({ value, fields }) {
 
   const handleSearch = (event) => {
     debouncedValue(event.target.value);
-    //debounce(() => setSearchTerm(event.target.value), 500)();
   };
-  //TODO:
 
   return (
     <DataContainer>
-      <SearchConatiner>
+      <SearchContainer>
         <input placeholder="search.." onChange={handleSearch} />
         <Search fontSize="20" color="white" size="50px" />
-      </SearchConatiner>
+      </SearchContainer>
       <Table
-        setCurrentIndex={setCurrentIndex}
-        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentPage}
+        currentIndex={currentPage}
         orderField={orderField}
         setSortingOrder={setOrderField}
         maxPages={memoizedValue.length}
-        value={memoizedValue[currentIndex - 1]}
-        fields={fields}
+        value={memoizedValue[currentPage - 1]}
+        columnDefinitions={columnDefinitions}
       />
     </DataContainer>
   );
@@ -82,7 +82,7 @@ const DataContainer = styled.div`
   }
 `;
 
-const SearchConatiner = styled.div`
+const SearchContainer = styled.div`
   display: flex;
   height: 50px;
   background-color: #333;
